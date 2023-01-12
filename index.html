@@ -16,7 +16,16 @@
     <!-- Client Code -->
     <script type="text/javascript">
 
-     
+      const ws = new WebSocket("ws://wsunreal.herokuapp.com");
+      //var ws = new WebSocket("ws://wsunreal.herokuapp.com/");
+      ws.addEventListener("open", () =>{
+        console.log("We are connected");
+        ws.send("How are you?");
+      });
+      
+      ws.addEventListener('message', function (event) {
+          console.log(event.data);
+      });
 
       // Get DOM elements
       var input = document.getElementById("input");
