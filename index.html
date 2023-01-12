@@ -7,17 +7,14 @@
   </head>
   <body>
 
-    <!-- File input and image output -->
-    <input type="file" id="input">
-    <input type="text" id="input2">
-    <input type="button" id="button1" value="message">
-    <img src="" id="output">
-
+    <input type="text" id="input-msg">
+    <input type="button" id="bt-send" value="Send">
+  
     <!-- Client Code -->
     <script type="text/javascript">
 
       const ws = new WebSocket("wss://wsunreal.herokuapp.com");
-      //var ws = new WebSocket("ws://wsunreal.herokuapp.com/");
+      
       ws.addEventListener("open", () =>{
         console.log("We are connected");
         ws.send("How are you?");
@@ -27,39 +24,11 @@
           console.log(event.data);
       });
 
-      // Get DOM elements
-      var input = document.getElementById("input");
-      var output = document.getElementById("output");
-
-      // Join a channel
-      var room = "test";
-    
-
-      // Listen to file input events
-      document.getElementById("input").addEventListener("change", function (event) {
-
-        // Prepeare file reader
-        var file = event.target.files[0];
-        var fileReader = new FileReader();
-
-        fileReader.onloadend = function (event) {
-          // Send an image event to the socket
-          var image = event.target.result
-          output.src = image;
-        
-        };
-
-        // Read file
-        fileReader.readAsDataURL(file);
-      })
-
-      // Listen to file input events
-      document.getElementById("button1").addEventListener("click", function (event) {
-       
-        console.log(document.getElementById("input2").value);
-        //document.getElementById("input2").value);
+      document.getElementById("bt-send").addEventListener("click", function (event) {
+        var msg = document.getElementById("input-msg").value;
+        console.log(msg);
+        ws.send(msg);
       });  
-
       
     </script>
   </body>
