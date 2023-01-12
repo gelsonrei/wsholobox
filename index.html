@@ -10,6 +10,7 @@
     <!-- File input and image output -->
     <input type="file" id="input">
     <input type="text" id="input2">
+    <input type="button" id="button1" value="message">
     <img src="" id="output">
 
     <!-- Client Code -->
@@ -44,9 +45,14 @@
         fileReader.readAsDataURL(file);
       })
 
-      socket.on("image", function (image) {
-        output.src = image;
-      });
+      // Listen to file input events
+      document.getElementById("button1").addEventListener("click", function (event) {
+        socket.emit("message", "teste");
+        console.log(document.getElementById("input2").value);
+        //document.getElementById("input2").value);
+      });  
+
+      
     </script>
   </body>
 </html>
