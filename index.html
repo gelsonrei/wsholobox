@@ -14,10 +14,11 @@
     <div class="container center p-3">
       <div class="col">
         
-        <div class="row p-2"> 
-          <input  type="text" id="input-msg"> 
+        <label  for="messages" style="color:white">Messages</label> 
+        <div class="row p-2" id="messages"> 
+       ]  <input   type="text" style="width: 50%;" id="input-msg"> 
           <span class="px-2"></span>  
-          <input  type="button" class="btn btn-warning" id="bt-send" value="Send text"> 
+          <input  type="button" class="btn btn-warning" style="width: 25%;" id="bt-send" value="Send"> 
         </div>
         
         <label  for="commands" style="color:white">Commands</label> 
@@ -33,7 +34,7 @@
           <!-- <img src="avatar.jpg" alt="avatar"> -->
           <div class="row p-2">
             <div class="form-group shadow-textarea w-100">
-              <label for="exampleFormControlTextarea6" style="color:white">Status Messages</label>
+              <label for="exampleFormControlTextarea6" style="color:white">Status</label>
               <textarea class="form-control z-depth-1"  id="statusMessages" rows="3" placeholder="Write something here..."></textarea>
             </div>
           </div>
