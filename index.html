@@ -3,75 +3,80 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>WebSocket Client</title>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-
-
-    <title>WebSocket Client</title>
     
   </head>
-  <body>
+  <body style="background-color: #2a2929 ">
 
-    <div class="container center p-3" style="background-color: dimgrey;">
+    <div class="container center p-3">
       <div class="col">
-      <div class="row p-2"> <input  type="text" id="input-msg"> <span class="px-2"></span>  <input  type="button" class="btn btn-warning" id="bt-send" value="Send"> </div>
-      <!-- <div class="row">
-        <div class="col w-50">
-          <img src="avatar.jpg" alt="avatar">
+        
+        <div class="row p-2"> 
+          <input  type="text" id="input-msg"> 
+          <span class="px-2"></span>  
+          <input  type="button" class="btn btn-warning" id="bt-send" value="Send text"> 
         </div>
-      <div class="col"> -->
-        <div class="row p-2"><input type="button" class="btn btn-primary pose" id="bt-Idle" value="Idle"></div>
-        <div class="row p-2"><input type="button" class="btn btn-primary pose" id="bt-Walk" value="Walk"></div>
-        <div class="row p-2"><input type="button" class="btn btn-primary pose" id="bt-Forward" value="Forward"></div>
-        <div class="row p-2"><input type="button" class="btn btn-primary pose" id="bt-Crounch" value="Crouch"></div>
-        <div class="row p-2"><input type="button" class="btn btn-primary pose" id="bt-Equip" value="Equip"></div>
-        <div class="row p-2"><input type="button" class="btn btn-primary pose" id="bt-Death" value="Death"></div>
-        <div class="row p-2"><input type="button" class="btn btn-primary pose" id="bt-Rifle" value="Rifle"></div>
-      <!-- </div> -->
-
-      <div class="row p-2"> <textarea id="status" name="status" rows="4" cols="50">  </textarea>  </div>
-      </div>
-      
-    </div>
+        
+        <label  for="commands" style="color:white">Commands</label> 
+        <div class="row" id="commands">
+          <span class="p-2"><input type="button" class="btn btn-primary pose" id="bt-Idle" value="Idle">      </span>
+          <span class="p-2"><input type="button" class="btn btn-primary pose" id="bt-Walk" value="Walk">      </span>
+          <span class="p-2"><input type="button" class="btn btn-primary pose" id="bt-Forward" value="Forward"></span>
+          <span class="p-2"><input type="button" class="btn btn-primary pose" id="bt-Crounch" value="Crouch"> </span>
+          <span class="p-2"><input type="button" class="btn btn-primary pose" id="bt-Equip" value="Equip">    </span>
+          <span class="p-2"><input type="button" class="btn btn-primary pose" id="bt-Death" value="Death">    </span>
+          <span class="p-2"><input type="button" class="btn btn-primary pose" id="bt-Rifle" value="Rifle">    </span>
+        </div> 
+          <!-- <img src="avatar.jpg" alt="avatar"> -->
+          <div class="row p-2">
+            <div class="form-group shadow-textarea w-100">
+              <label for="exampleFormControlTextarea6" style="color:white">Status Messages</label>
+              <textarea class="form-control z-depth-1"  id="statusMessages" rows="3" placeholder="Write something here..."></textarea>
+            </div>
+          </div>
+     
     </div>
   
     <!-- Client Code -->
     <script type="text/javascript">
 
-      const ws = new WebSocket("wss://wsserve.herokuapp.com");
+      function setStatus(msg){
+        document.getElementById("statusMessages").value+=msg+'\n';
+        document.getElementById("statusMessages").scrollTop =  document.getElementById("statusMessages").scrollHeight;
+        console.log(msg);
+      }
 
-      var status = document.getElementById("status");
-      status.value = "status";
-      console.log (status);
+      const ws = new WebSocket("wss://wsserve.herokuapp.com");
+      
       ws.addEventListener("open", () =>{
-        console.log("We are connected");
-        ws.send("How are you?");
+        var msg = "We are connected"
+        setStatus(msg);
+        ws.send(msg);
       });
       
       ws.addEventListener('message', function (event) {
-          console.log(event.data);
-          status.value += event.data;
+          // setStatus(event.data);
+          console.log(event.data)
       });
  
       document.getElementById("bt-send").addEventListener("click", function (event) {
         var msg = document.getElementById("input-msg").value;
-        console.log(msg);
+        setStatus(msg);
         ws.send(msg);
       }); 
 
       var btPoses  = document.getElementsByClassName("pose");
       Array.from(document.getElementsByClassName("pose")).forEach(
           function(element, index, array) {
-              console.log(element);
               element.addEventListener("click", function (event) {
-                console.log(event.target.value);
+                setStatus('Sending-> '+event.target.value);
                 ws.send(event.target.value);
-                status.value += 'clicked:'+event.target.value+'\n';
               });
           }
       );
-     
       
     </script>
 
