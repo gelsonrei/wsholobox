@@ -13,17 +13,25 @@
   </head>
   <body>
 
-    <div class="container center p-3">
+    <div class="container center p-3" style="background-color: dimgrey;">
       <div class="col">
-      <div class="row p-2"> <input  type="text" id="input-msg"> <span class="px-2"></span>  <input  type="button" class="btn btn-warning" id="bt-send" value="Send message"> </div>
-      <div class="row p-2"><input type="button" class="btn btn-primary" id="bt-Idle" value="Idle"></div>
-      <div class="row p-2"><input type="button" class="btn btn-primary" id="bt-Walk" value="Walk"></div>
-      <div class="row p-2"><input type="button" class="btn btn-primary" id="bt-Forward" value="Forward"></div>
-      <div class="row p-2"><input type="button" class="btn btn-primary" id="bt-Crounch" value="Crounch"></div>
-      <div class="row p-2"><input type="button" class="btn btn-primary" id="bt-Equip" value="Equip"></div>
-      <div class="row p-2"><input type="button" class="btn btn-primary" id="bt-Death" value="Death"></div>
-      <div class="row p-2"><input type="button" class="btn btn-primary" id="bt-Rifle" value="Rifle"></div>
+      <div class="row p-2"> <input  type="text" id="input-msg"> <span class="px-2"></span>  <input  type="button" class="btn btn-warning" id="bt-send" value="Send"> </div>
+      <div class="row">
+        <div class="col w-50">
+          <img src="avatar.jpg" alt="avatar">
+        </div>
+      <div class="col">
+        <div class="row p-2"><input type="button" class="btn btn-primary pose" id="bt-Idle" value="Idle"></div>
+        <div class="row p-2"><input type="button" class="btn btn-primary pose" id="bt-Walk" value="Walk"></div>
+        <div class="row p-2"><input type="button" class="btn btn-primary pose" id="bt-Forward" value="Forward"></div>
+        <div class="row p-2"><input type="button" class="btn btn-primary pose" id="bt-Crounch" value="Crounch"></div>
+        <div class="row p-2"><input type="button" class="btn btn-primary pose" id="bt-Equip" value="Equip"></div>
+        <div class="row p-2"><input type="button" class="btn btn-primary pose" id="bt-Death" value="Death"></div>
+        <div class="row p-2"><input type="button" class="btn btn-primary pose" id="bt-Rifle" value="Rifle"></div>
       </div>
+      </div>
+      
+    </div>
     </div>
   
     <!-- Client Code -->
@@ -39,12 +47,24 @@
       ws.addEventListener('message', function (event) {
           console.log(event.data);
       });
-
+ 
       document.getElementById("bt-send").addEventListener("click", function (event) {
         var msg = document.getElementById("input-msg").value;
         console.log(msg);
         ws.send(msg);
-      });  
+      }); 
+
+      var btPoses  = document.getElementsByClassName("pose");
+      Array.from(document.getElementsByClassName("pose")).forEach(
+          function(element, index, array) {
+              console.log(element);
+              element.addEventListener("click", function (event) {
+                console.log(event.target.value);
+                ws.send(event.target.value);
+              });
+          }
+      );
+     
       
     </script>
 
