@@ -16,19 +16,21 @@
     <div class="container center p-3" style="background-color: dimgrey;">
       <div class="col">
       <div class="row p-2"> <input  type="text" id="input-msg"> <span class="px-2"></span>  <input  type="button" class="btn btn-warning" id="bt-send" value="Send"> </div>
-      <div class="row">
+      <!-- <div class="row">
         <div class="col w-50">
           <img src="avatar.jpg" alt="avatar">
         </div>
-      <div class="col">
+      <div class="col"> -->
         <div class="row p-2"><input type="button" class="btn btn-primary pose" id="bt-Idle" value="Idle"></div>
         <div class="row p-2"><input type="button" class="btn btn-primary pose" id="bt-Walk" value="Walk"></div>
         <div class="row p-2"><input type="button" class="btn btn-primary pose" id="bt-Forward" value="Forward"></div>
-        <div class="row p-2"><input type="button" class="btn btn-primary pose" id="bt-Crounch" value="Crounch"></div>
+        <div class="row p-2"><input type="button" class="btn btn-primary pose" id="bt-Crounch" value="Crouch"></div>
         <div class="row p-2"><input type="button" class="btn btn-primary pose" id="bt-Equip" value="Equip"></div>
         <div class="row p-2"><input type="button" class="btn btn-primary pose" id="bt-Death" value="Death"></div>
         <div class="row p-2"><input type="button" class="btn btn-primary pose" id="bt-Rifle" value="Rifle"></div>
-      </div>
+      <!-- </div> -->
+
+      <div class="row p-2"> <textarea id="status" name="status" rows="4" cols="50">  </textarea>  </div>
       </div>
       
     </div>
@@ -38,7 +40,10 @@
     <script type="text/javascript">
 
       const ws = new WebSocket("wss://wsserve.herokuapp.com");
-      
+
+      var status = document.getElementById("status");
+      status.value = "status";
+      console.log (status);
       ws.addEventListener("open", () =>{
         console.log("We are connected");
         ws.send("How are you?");
@@ -46,6 +51,7 @@
       
       ws.addEventListener('message', function (event) {
           console.log(event.data);
+          status.value += event.data;
       });
  
       document.getElementById("bt-send").addEventListener("click", function (event) {
@@ -61,6 +67,7 @@
               element.addEventListener("click", function (event) {
                 console.log(event.target.value);
                 ws.send(event.target.value);
+                status.value += 'clicked:'+event.target.value+'\n';
               });
           }
       );
